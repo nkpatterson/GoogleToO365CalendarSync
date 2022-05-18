@@ -1,0 +1,188 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_CalendarSyncGmailToOutlook_name": {
+            "defaultValue": "CalendarSyncGmailToOutlook",
+            "type": "string"
+        },
+        "connections_googlecalendar_externalid": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "location": {
+            "defaultValue": "eastus2",
+            "type": "string"
+        },
+        "googleCalendarId": {
+            "defaultValue": "",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_CalendarSyncGmailToOutlook_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "$googleCalendarId": {
+                            "defaultValue": "",
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "When_an_event_is_added_to_a_calendar": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 3
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Minute",
+                                "interval": 3
+                            },
+                            "splitOn": "@triggerBody()?['items']",
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['googlecalendar']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/trigger1/calendars/@{encodeURIComponent(parameters('$googleCalendarId'))}/events"
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Condition": {
+                            "actions": {
+                                "Terminate": {
+                                    "runAfter": {},
+                                    "type": "Terminate",
+                                    "inputs": {
+                                        "runStatus": "Succeeded"
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "expression": {
+                                "and": [
+                                    {
+                                        "startsWith": [
+                                            "@triggerBody()?['summary']",
+                                            "MSFT EVENT:"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "For_each": {
+                            "foreach": "@body('Get_calendars_(V2)')?['value']",
+                            "actions": {
+                                "Condition_2": {
+                                    "actions": {
+                                        "Create_event_(V4)": {
+                                            "runAfter": {},
+                                            "type": "ApiConnection",
+                                            "inputs": {
+                                                "body": {
+                                                    "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}</p>",
+                                                    "end": "@triggerBody()?['end']",
+                                                    "showAs": "busy",
+                                                    "start": "@triggerBody()?['start']",
+                                                    "subject": "GH EVENT: @{triggerBody()?['summary']}",
+                                                    "timeZone": "(UTC) Coordinated Universal Time"
+                                                },
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(item().id))}/items"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {},
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@item().isDefaultCalendar",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                }
+                            },
+                            "runAfter": {
+                                "Get_calendars_(V2)": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Get_calendars_(V2)": {
+                            "runAfter": {
+                                "Condition": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/codeless/v1.0/me/calendars",
+                                "queries": {
+                                    "orderBy": "name",
+                                    "skip": 0,
+                                    "top": 256
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "googlecalendar": {
+                                "connectionId": "[parameters('connections_googlecalendar_externalid')]",
+                                "connectionName": "googlecalendar"
+                            },
+                            "office365": {
+                                "connectionId": "[parameters('connections_office365_externalid')]",
+                                "connectionName": "office365"
+                            }
+                        }
+                    },
+                    "$googleCalendarId": {
+                        "value": "[parameters('googleCalendarId')]"
+                    }
+                }
+            }
+        }
+    ]
+}
