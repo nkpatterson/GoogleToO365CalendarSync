@@ -170,11 +170,13 @@
                         "value": {
                             "googlecalendar": {
                                 "connectionId": "[parameters('connections_googlecalendar_externalid')]",
-                                "connectionName": "googlecalendar"
+                                "connectionName": "googlecalendar",
+                                "id": "/subscriptions/402f66ca-91ab-452b-a436-52cf0dce9bf0/providers/Microsoft.Web/locations/[parameters('location')]/managedApis/googlecalendar"
                             },
                             "office365": {
                                 "connectionId": "[parameters('connections_office365_externalid')]",
-                                "connectionName": "office365"
+                                "connectionName": "office365",
+                                "id": "/subscriptions/402f66ca-91ab-452b-a436-52cf0dce9bf0/providers/Microsoft.Web/locations/[parameters('location')]/managedApis/office365"
                             }
                         }
                     },
