@@ -172,7 +172,7 @@
                             "office365": {
                                 "connectionId": "[parameters('office365ExternalId')]",
                                 "connectionName": "office365",
-                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/office365"
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/office365')]"
                             }
                         }
                     },
