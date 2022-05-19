@@ -27,22 +27,42 @@ class Api {
         return "";
     }
 
-    public createResourceGroup(username: string): string {
-        // returns newly created Resource Group Name
-        return "";
+    public async getCurrentUsername():Promise<string> {
+        const response = await fetch('/.auth/me');
+        const payload = await response.json();
+        const { clientPrincipal } = payload;
+        console.log(clientPrincipal);
+        return clientPrincipal.userDetails;
     }
 
-    public createExternalConnection(api: CalendarApi, username: string, resourceGroupName: string): ExternalConnection {
-        // TODO: 
-        return new ExternalConnection("blah", "https://godosomething.com");
+    public async createResourceGroup(username: string): Promise<string> {
+        let response = await fetch(this.apiUrlBase + "CreateResourceGroup?username=" + username);
+        let payload = await response.json();
+
+        return payload.rgName;
     }
 
-    public confirmConsentCode(consentCode: string, resourceId: string): boolean {
-        return true;
+    public async createExternalConnection(api: CalendarApi, username: string, resourceGroupName: string): Promise<ExternalConnection> {
+        let apiString = (api == CalendarApi.GoogleCalendar) ? "googlecalendar" : "office365";
+        let response = await fetch(this.apiUrlBase + "CreateExternalConnection?api=" + apiString + "&username=" + username + "&rgName=" + resourceGroupName);
+        let payload = await response.json();
+
+        return new ExternalConnection(payload.resourceId, payload.consentLink);
     }
 
-    public deployLogicApps(resourceGroupName: string, googleResourceId: string, googleCalendarId: string, office365ResourceId: string): boolean {
-        return true;
+    public async confirmConsentCode(consentCode: string, resourceId: string): Promise<boolean> {
+        let response = await fetch(this.apiUrlBase + "ConfirmConsentCode?consentCode=" + consentCode + "&resourceId=" + resourceId);
+        let payload = await response.json();
+
+        return payload.status;
+    }
+
+    public async deployLogicApps(resourceGroupName: string, googleResourceId: string, googleCalendarId: string, office365ResourceId: string): Promise<boolean> {
+        let url = this.apiUrlBase + "DeployLogicApp?rgName=" + resourceGroupName + "&googleResourceId=" + googleResourceId + "&office365ResourceId=" + office365ResourceId + "&googleCalendarId=" + googleCalendarId;
+        let response = await fetch(url);
+        let payload = await response.text();
+
+        return (payload == "Success") ? true : false;
     }
 }
 

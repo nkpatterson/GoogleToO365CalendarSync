@@ -14,20 +14,30 @@ export default defineComponent({
   },
   data() {
     return {
-      count: 1
+      page: { 
+        message: ""
+      }
+    }
+  },
+  methods: {
+    async proceed() {
+      let api = new Api();
+      this.page.message = "Loading, please wait..."
+      await api.createResourceGroup(await api.getCurrentUsername());
+      this.page.message = "Done!";
+      this.$router.push("/google");
     }
   },
   mounted() {
-    this.name // type: string | undefined
-    this.msg // type: string
-    this.count // type: number
+
   }
 })
 </script>
 <template>
     <ProgressBar />
     <Instructions />
-    <h1>Step {{ count }}</h1>
+    <h1>Step 1</h1>
     <p>This is the first step towards enlightenment.</p>
-    <router-link to="/google">Continue</router-link>
+    <p>{{ page.message }}</p>
+    <button @click="proceed">Proceed</button>
 </template>
