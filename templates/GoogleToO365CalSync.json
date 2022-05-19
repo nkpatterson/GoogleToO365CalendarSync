@@ -2,20 +2,16 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "workflows_CalendarSyncGmailToOutlook_name": {
-            "defaultValue": "CalendarSyncGmailToOutlook",
+        "workflowName": {
+            "defaultValue": "[concat('GoogleToO365Create', uniqueString(resourceGroup().id))]",
             "type": "string"
         },
-        "connections_googlecalendar_externalid": {
+        "googleCalendarExternalId": {
             "defaultValue": "",
             "type": "string"
         },
-        "connections_office365_externalid": {
+        "office365ExternalId": {
             "defaultValue": "",
-            "type": "string"
-        },
-        "location": {
-            "defaultValue": "eastus2",
             "type": "string"
         },
         "googleCalendarId": {
@@ -28,8 +24,8 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_CalendarSyncGmailToOutlook_name')]",
-            "location": "[parameters('location')]",
+            "name": "[parameters('workflowName')]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "state": "Enabled",
                 "definition": {
@@ -169,14 +165,14 @@
                     "$connections": {
                         "value": {
                             "googlecalendar": {
-                                "connectionId": "[parameters('connections_googlecalendar_externalid')]",
+                                "connectionId": "[parameters('googleCalendarExternalId')]",
                                 "connectionName": "googlecalendar",
-                                "id": "/subscriptions/402f66ca-91ab-452b-a436-52cf0dce9bf0/providers/Microsoft.Web/locations/eastus2/managedApis/googlecalendar"
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/googlecalendar')]"
                             },
                             "office365": {
-                                "connectionId": "[parameters('connections_office365_externalid')]",
+                                "connectionId": "[parameters('office365ExternalId')]",
                                 "connectionName": "office365",
-                                "id": "/subscriptions/402f66ca-91ab-452b-a436-52cf0dce9bf0/providers/Microsoft.Web/locations/eastus2/managedApis/office365"
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/office365"
                             }
                         }
                     },
