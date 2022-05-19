@@ -15,6 +15,7 @@ class ExternalConnection {
 
 class Api {
     apiUrlBase: string = "https://nkp-calsync-funcs.azurewebsites.net/api/";
+    functionsHostKey: string = import.meta.env.FUNCTIONS_HOST_KEY;
 
     public getConsentCodeFromUrl(url: string): string {
         let regex = new RegExp('(code=)(.*)$');
