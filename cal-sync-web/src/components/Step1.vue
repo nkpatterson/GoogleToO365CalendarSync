@@ -29,7 +29,17 @@ export default defineComponent({
     }
   },
   mounted() {
-
+    let api = new Api();
+    api.getCurrentUsername().then((user) => {
+      if (user == "") {
+        window.location.href = "/.auth/login/aad";
+      }
+      api.isValidUser().then((result) => {
+        if (!result) {
+          this.$router.push("/invalid");
+        }
+      })
+    });
   }
 })
 </script>

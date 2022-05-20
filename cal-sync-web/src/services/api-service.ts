@@ -28,11 +28,13 @@ class Api {
     }
 
     public async getCurrentUsername():Promise<string> {
-        const response = await fetch('/.auth/me');
-        const payload = await response.json();
-        const { clientPrincipal } = payload;
-        console.log(clientPrincipal);
-        return clientPrincipal.userDetails;
+        let response = await fetch('/.auth/me');
+        let payload = await response.json();
+        
+        if (payload.clientPrincipal != null)
+            return payload.clientPrincipal.userDetails;
+
+        return "";
     }
 
     public async getCurrentAlias(): Promise<string> {

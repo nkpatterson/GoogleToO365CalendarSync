@@ -76,5 +76,22 @@ describe("Logged in user information", () => {
 
         let result = await svc.getCurrentAlias();
         expect(result).toBe("nipatter");
+    });
+
+    it("should return nothing if user not logged in", async () => {
+        let svc = new Api();
+        let mockFetch = vi.fn().mockImplementationOnce(() => {
+            return {
+                json: vi.fn().mockImplementationOnce(() => {
+                    return {
+                        clientPrincipal: null
+                    }
+                })
+            }
+        });
+        global.fetch = mockFetch;
+
+        let result = await svc.getCurrentUsername();
+        expect(result).toBe("");
     })
 })
