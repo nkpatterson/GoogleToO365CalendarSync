@@ -1,10 +1,36 @@
 <script setup lang="ts">
+import { Api, CalendarApi } from '../services/api-service'
 import ProgressBar from './ProgressBar.vue'
 import Instructions from './Instructions.vue'
+import { wizardState } from './wizard-state'
+import { defineComponent } from 'vue'
+</script>
+
+<script lang="ts">
+export default defineComponent({
+  props: {
+  },
+  data() {
+    return { wizardState };
+  },
+  methods: {
+    async proceed() {
+      let api = new Api();
+      this.wizardState.message = "Loading, please wait..."
+      let conn = await api.createExternalConnection(CalendarApi.GoogleCalendar, this.wizardState.userAlias, this.wizardState.rgName);
+      this.wizardState.googleResourceId = conn.ResourceId;
+      this.wizardState.message = conn.ConsentLink;
+    }
+  },
+  mounted() {
+  }
+});
 </script>
 <template>
     <ProgressBar />
     <Instructions />
     <h1>Step 2</h1>
-    This is the second step towards enlightenment.
+    <p>This is the second step towards enlightenment. You must login with your @github.com Google credentials.</p>
+    <p>{{ wizardState.message }}</p>
+    <button @click="proceed">Login to Google</button>
 </template>
