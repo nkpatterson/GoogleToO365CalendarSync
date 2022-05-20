@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { Api } from './services/api-service'
 import App from './App2.vue'
 import Step1 from './components/Step1.vue'
 import Step2 from './components/Step2.vue'
@@ -42,3 +43,14 @@ app.use(router)
 app.mount('#app')
 
 // Now the app has started!
+let api = new Api();
+api.getCurrentUsername().then((user) => {
+  if (user == "") {
+    window.location.href = "/.auth/login/aad";
+  }
+  api.isValidUser().then((result) => {
+    if (!result) {
+      router.push("/invalid");
+    }
+  })
+});
