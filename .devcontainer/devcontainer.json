@@ -24,7 +24,8 @@
 		"ms-azuretools.vscode-azureresourcegroups",
 		"ms-azuretools.vscode-azurestaticwebapps",
 		"ms-azuretools.vscode-docker",
-		"vue.volar"
+		"vue.volar",
+		"ZixuanChen.vitest-explorer"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

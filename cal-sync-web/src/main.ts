@@ -1,11 +1,13 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { Api } from './services/api-service'
 import App from './App2.vue'
 import Step1 from './components/Step1.vue'
 import Step2 from './components/Step2.vue'
 import Step3 from './components/Step3.vue'
 import Step4 from './components/Step4.vue'
 import Step5 from './components/Step5.vue'
+import Invalid from './components/Invalid.vue'
 
 // 1. Define route components.
 // These can be imported from other files
@@ -20,6 +22,7 @@ const routes = [
   { path: '/o365', component: Step3 },
   { path: '/provision', component: Step4 },
   { path: '/finish', component: Step5 },
+  { path: '/invalid', component: Invalid }
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -40,3 +43,14 @@ app.use(router)
 app.mount('#app')
 
 // Now the app has started!
+let api = new Api();
+api.getCurrentUsername().then((user) => {
+  if (user == "") {
+    window.location.href = "/.auth/login/aad";
+  }
+  api.isValidUser().then((result) => {
+    if (!result) {
+      router.push("/invalid");
+    }
+  })
+});

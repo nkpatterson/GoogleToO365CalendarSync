@@ -21,18 +21,34 @@ class Api {
         let regex = new RegExp('(code=)(.*)$');
         let result = regex.exec(url);
         if (result != null && result.length > 0) {
-            return result[1];
+            return result[2];
         }
 
         return "";
     }
 
     public async getCurrentUsername():Promise<string> {
-        const response = await fetch('/.auth/me');
-        const payload = await response.json();
-        const { clientPrincipal } = payload;
-        console.log(clientPrincipal);
-        return clientPrincipal.userDetails;
+        let response = await fetch('/.auth/me');
+        let payload = await response.json();
+        
+        if (payload.clientPrincipal != null)
+            return payload.clientPrincipal.userDetails;
+
+        return "";
+    }
+
+    public async getCurrentAlias(): Promise<string> {
+        let username = await this.getCurrentUsername();
+        if (username != "" && username.indexOf("@") > 0) {
+            return username.split("@")[0];
+        }
+
+        return "";
+    }
+
+    public async isValidUser(): Promise<boolean> {
+        let username = await this.getCurrentUsername();
+        return username.endsWith("@microsoft.com");
     }
 
     public async createResourceGroup(username: string): Promise<string> {
