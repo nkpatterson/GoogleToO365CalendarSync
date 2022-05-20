@@ -21,7 +21,7 @@ class Api {
         let regex = new RegExp('(code=)(.*)$');
         let result = regex.exec(url);
         if (result != null && result.length > 0) {
-            return result[1];
+            return result[2];
         }
 
         return "";
