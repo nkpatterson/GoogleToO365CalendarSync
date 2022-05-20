@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { Api } from "../src/services/api-service"
 
 describe("Consent code handling", () => {
@@ -17,5 +17,64 @@ describe("Consent code handling", () => {
 
         let result = svc.getConsentCodeFromUrl(fakeUrl);
         expect(result).toBe("");
-    })
+    });
 });
+
+describe("Logged in user information", () => {
+    it("should return valid user with @microsoft.com address", async () => {
+        let svc = new Api();
+        let mockFetch = vi.fn().mockImplementationOnce(() => {
+            return {
+                json: vi.fn().mockImplementationOnce(() => {
+                    return {
+                        clientPrincipal: {
+                            userDetails: "nipatter@microsoft.com"
+                        }
+                    }
+                })
+            }
+        });
+        global.fetch = mockFetch;
+
+        let result = await svc.isValidUser();
+        expect(result).toBe(true);
+    });
+
+    it("should not validate user with @bad.com address", async () => {
+        let svc = new Api();
+        let mockFetch = vi.fn().mockImplementationOnce(() => {
+            return {
+                json: vi.fn().mockImplementationOnce(() => {
+                    return {
+                        clientPrincipal: {
+                            userDetails: "nipatter@badmamajamma.com"
+                        }
+                    }
+                })
+            }
+        });
+        global.fetch = mockFetch;
+
+        let result = await svc.isValidUser();
+        expect(result).toBe(false);
+    });
+
+    it("should return just the alias", async () => {
+        let svc = new Api();
+        let mockFetch = vi.fn().mockImplementationOnce(() => {
+            return {
+                json: vi.fn().mockImplementationOnce(() => {
+                    return {
+                        clientPrincipal: {
+                            userDetails: "nipatter@microsoft.com"
+                        }
+                    }
+                })
+            }
+        });
+        global.fetch = mockFetch;
+
+        let result = await svc.getCurrentAlias();
+        expect(result).toBe("nipatter");
+    })
+})

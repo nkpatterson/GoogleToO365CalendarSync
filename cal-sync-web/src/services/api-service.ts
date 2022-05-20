@@ -35,6 +35,20 @@ class Api {
         return clientPrincipal.userDetails;
     }
 
+    public async getCurrentAlias(): Promise<string> {
+        let username = await this.getCurrentUsername();
+        if (username != "" && username.indexOf("@") > 0) {
+            return username.split("@")[0];
+        }
+
+        return "";
+    }
+
+    public async isValidUser(): Promise<boolean> {
+        let username = await this.getCurrentUsername();
+        return username.endsWith("@microsoft.com");
+    }
+
     public async createResourceGroup(username: string): Promise<string> {
         let response = await fetch(this.apiUrlBase + "CreateResourceGroup?username=" + username);
         let payload = await response.json();
