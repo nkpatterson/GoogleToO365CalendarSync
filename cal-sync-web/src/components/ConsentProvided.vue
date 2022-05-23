@@ -1,6 +1,14 @@
 <script lang="ts">
-    window.close();
-
-    export default { }
+import { defineComponent } from 'vue'
+export default defineComponent({
+  props: {
+  },
+  data() {
+  },
+  methods: {},
+  mounted() {
+      window.close();
+  }
+});
 </script>
 <template></template>
