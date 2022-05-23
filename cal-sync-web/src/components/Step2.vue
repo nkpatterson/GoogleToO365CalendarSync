@@ -37,6 +37,7 @@ export default defineComponent({
           }
         }
       }, 500);
+    },
   },
   mounted() {
   }
