@@ -1,5 +1,6 @@
 <script lang="ts">
     window.close();
 
-    export { }
+    export default { }
 </script>
+<template></template>
