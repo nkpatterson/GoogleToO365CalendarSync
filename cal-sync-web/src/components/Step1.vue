@@ -17,7 +17,7 @@ export default defineComponent({
     async proceed() {
       let api = new Api();
       this.wizardState.message = "Loading, please wait..."
-      await api.createResourceGroup(await api.getCurrentAlias());
+      this.wizardState.rgName = await api.createResourceGroup(await api.getCurrentAlias());
       this.wizardState.message = "Done!";
       this.$router.push("/google");
     }

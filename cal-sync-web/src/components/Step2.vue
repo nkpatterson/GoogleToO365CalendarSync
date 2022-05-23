@@ -19,7 +19,25 @@ export default defineComponent({
       this.wizardState.message = "Loading, please wait..."
       let conn = await api.createExternalConnection(CalendarApi.GoogleCalendar, this.wizardState.userAlias, this.wizardState.rgName);
       this.wizardState.googleResourceId = conn.ResourceId;
-      this.wizardState.message = conn.ConsentLink;
+      let rtr = this.$router;
+      
+      let consentWindow = window.open(conn.ConsentLink, "", "width=300,height=500,menubar=no,toolbar=no,");
+      if (consentWindow != null) {
+        consentWindow.onload = function() {
+          if (consentWindow != null && consentWindow.location.href.indexOf("code=") > -1) {
+            let code = api.getConsentCodeFromUrl(consentWindow.location.href);
+            if (code != "") {
+              consentWindow.close();
+              api.confirmConsentCode(code, wizardState.googleResourceId).then((result) => {
+                if (result) {
+                  wizardState.message = "Done!";
+                  rtr.push("/o365");
+                }
+              });
+            }
+          }
+        }
+      }
     }
   },
   mounted() {

@@ -14,8 +14,9 @@ class ExternalConnection {
 }
 
 class Api {
+    // apiUrlBase: string = import.meta.env.VITE_FUNCTIONS_HOST_URL + "/api/";
     apiUrlBase: string = "/api/";
-    functionsHostKey: string = import.meta.env.FUNCTIONS_HOST_KEY;
+    functionsHostKey: string = import.meta.env.VITE_FUNCTIONS_HOST_KEY;
 
     public getConsentCodeFromUrl(url: string): string {
         let regex = new RegExp('(code=)(.*)$');
