@@ -21,24 +21,22 @@ export default defineComponent({
       this.wizardState.googleResourceId = conn.ResourceId;
       let rtr = this.$router;
       
-      let consentWindow = window.open(conn.ConsentLink, "", "width=300,height=500,menubar=no,toolbar=no,");
-      if (consentWindow != null) {
-        consentWindow.onload = function() {
-          if (consentWindow != null && consentWindow.location.href.indexOf("code=") > -1) {
-            let code = api.getConsentCodeFromUrl(consentWindow.location.href);
-            if (code != "") {
-              consentWindow.close();
-              api.confirmConsentCode(code, wizardState.googleResourceId).then((result) => {
-                if (result) {
-                  wizardState.message = "Done!";
-                  rtr.push("/o365");
-                }
-              });
-            }
+      let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=500,menubar=no,toolbar=no,");
+      let timer = setTimeout(function() {
+        if (consentWindow != null && consentWindow.location.href.indexOf("code=") > -1) {
+          let code = api.getConsentCodeFromUrl(consentWindow.location.href);
+          if (code != "") {
+            clearTimeout(timer);
+            consentWindow.close();
+            api.confirmConsentCode(code, wizardState.googleResourceId).then((result) => {
+              if (result) {
+                wizardState.message = "Done!";
+                rtr.push("/o365");
+              }
+            });
           }
         }
-      }
-    }
+      }, 500);
   },
   mounted() {
   }
