@@ -21,9 +21,9 @@ export default defineComponent({
       this.wizardState.googleResourceId = conn.ResourceId;
       let rtr = this.$router;
       
-      let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=500,menubar=no,toolbar=no,");
+      let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=600,menubar=no,toolbar=no,popup=yes");
       let timer = setTimeout(function() {
-        if (consentWindow != null && consentWindow.location.href.indexOf("code=") > -1) {
+        if (consentWindow != null && consentWindow.document.URL.indexOf("code=") > -1) {
           let code = api.getConsentCodeFromUrl(consentWindow.location.href);
           if (code != "") {
             clearTimeout(timer);
