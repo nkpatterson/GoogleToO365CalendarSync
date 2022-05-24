@@ -22,22 +22,12 @@ export default defineComponent({
       let rtr = this.$router;
       
       let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=600,menubar=no,toolbar=no,popup=yes");
-      let timer = setTimeout(function() {
-        if (consentWindow != null && consentWindow.document.URL.indexOf("code=") > -1) {
-          let code = api.getConsentCodeFromUrl(consentWindow.location.href);
-          if (code != "") {
-            clearTimeout(timer);
-            consentWindow.close();
-            api.confirmConsentCode(code, wizardState.office365ResourceId).then((result) => {
-              if (result) {
-                wizardState.message = "Done!";
-                rtr.push("/provision");
-              }
-            });
-          }
+      if (consentWindow != null) {
+        consentWindow.onbeforeunload = function() {
+          rtr.push('/provision');
         }
-      }, 500);
-    }
+      }
+    },
   },
   mounted() {
   }
@@ -47,7 +37,7 @@ export default defineComponent({
     <ProgressBar />
     <Instructions />
     <h1>Step 3</h1>
-    <p>This is the third step towards enlightenment. You must login with your @microsoft.com Microsoft credentials.</p>
+    <p>This is the third step towards enlightenment. You must login with your @microsoft.com Microsoft O365 credentials.</p>
     <p>{{ wizardState.message }}</p>
     <button @click="proceed">Login to Office 365</button>
 </template>

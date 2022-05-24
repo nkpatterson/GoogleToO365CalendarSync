@@ -23,32 +23,10 @@ export default defineComponent({
       
       let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=600,menubar=no,toolbar=no,popup=yes");
       if (consentWindow != null) {
-        consentWindow.onclose = function() {
+        consentWindow.onbeforeunload = function() {
           rtr.push('/o365');
         }
       }
-      // let timer = setTimeout(function() {
-      //   if (consentWindow != null) {
-      //     let url = "";
-      //     try {
-      //       url = consentWindow.document.URL;
-      //     }
-      //     catch {
-      //       // cross-domain error
-      //     }
-      //     let code = api.getConsentCodeFromUrl(url);
-      //     if (code != "") {
-      //       clearTimeout(timer);
-      //       consentWindow.close();
-      //       api.confirmConsentCode(code, wizardState.googleResourceId).then((result) => {
-      //         if (result) {
-      //           wizardState.message = "Done!";
-      //           rtr.push("/o365");
-      //         }
-      //       });
-      //     }
-      //   }
-      // }, 500);
     },
   },
   mounted() {
