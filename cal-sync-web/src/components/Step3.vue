@@ -21,12 +21,13 @@ export default defineComponent({
       this.wizardState.office365ResourceId = conn.ResourceId;
       let rtr = this.$router;
       
-      let consentWindow = window.open(conn.ConsentLink, "", "width=400,height=600,menubar=no,toolbar=no,popup=yes");
-      if (consentWindow != null) {
-        consentWindow.onbeforeunload = function() {
-          rtr.push('/provision');
-        }
-      }
+      let consentWindow = window.open(conn.ConsentLink, "", "width=500,height=600,menubar=no,toolbar=no,popup=yes");
+      var timer = setInterval(function() { 
+          if(consentWindow != null && consentWindow.closed) {
+              clearInterval(timer);
+              rtr.push('/provision');
+          }
+      }, 1000);
     },
   },
   mounted() {
