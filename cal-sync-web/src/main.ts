@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 import { Api } from './services/api-service'
 import App from './App2.vue'
 import Step1 from './components/Step1.vue'
@@ -41,7 +44,7 @@ const router = createRouter({
 const app = createApp(App)
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
-app.use(router)
+app.use(router).use(VueLoading);
 
 app.mount('#app')
 

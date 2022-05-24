@@ -10,5 +10,5 @@ export default defineComponent({
 </script>
 
 <template>
-    {{ text }}
+    <p>{{ text }}</p>
 </template>

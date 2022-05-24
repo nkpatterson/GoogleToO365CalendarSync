@@ -144,6 +144,10 @@
     font-weight: bold;
     margin-top: 2px;
 }
+
+.btn-bar {
+  text-align: center;
+}
 </style>
 <template>
     <div id="logo">

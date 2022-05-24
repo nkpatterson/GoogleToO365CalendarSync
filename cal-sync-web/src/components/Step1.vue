@@ -16,9 +16,9 @@ export default defineComponent({
   methods: {
     async proceed() {
       let api = new Api();
-      this.wizardState.message = "Loading, please wait..."
+      let loader = this.$loading.show();
       this.wizardState.rgName = await api.createResourceGroup(await api.getCurrentAlias());
-      this.wizardState.message = "Done!";
+      loader.hide();
       this.$router.push("/google");
     }
   },
@@ -30,6 +30,5 @@ export default defineComponent({
     <ProgressBar :current-step="1" />
     <h1>Step 1</h1>
     <Instructions text="This wizard will walk you through a series of steps that will create a synchronization service between your Google and Office 365 calendars. Click on the Proceed button below to get started." />
-    <p>{{ wizardState.message }}</p>
-    <button @click="proceed" class="btn btn__primary btn__lg">Proceed</button>
+    <div class="btn-bar"><button @click="proceed" class="btn btn__primary btn__lg">Proceed</button></div>
 </template>

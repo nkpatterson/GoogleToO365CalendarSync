@@ -6,5 +6,4 @@ export const wizardState = reactive({
     googleCalendarId: "",
     office365ResourceId: "",
     userAlias: "",
-    message: ""
 });
