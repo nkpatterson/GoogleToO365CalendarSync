@@ -5,6 +5,6 @@ import Instructions from './Instructions.vue'
 <template>
     <ProgressBar />
     <Instructions />
-    <h1>Step 1</h1>
-    This is the first step towards enlightenment.
+    <h1>Step 5</h1>
+    All done! You should start to see calendar events syncing from your Google calendar to your Office 365 calendar shortly.
 </template>
