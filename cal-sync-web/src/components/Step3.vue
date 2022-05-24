@@ -36,7 +36,7 @@ export default defineComponent({
 </script>
 <template>
     <ProgressBar :current-step="3" />
-    <h1>Step 3</h1>
+    <h1>Step 3 - Office 365 Calendar</h1>
     <Instructions text="On this step, you will establish a connection to your Office 365 calendar. Click the Login to Office 365 button below and login with your @microsoft.com Microsoft credentials in order to authorize access to the application." />
     <p>{{ wizardState.message }}</p>
     <button @click="proceed" class="btn btn__primary btn__lg">Login to Office 365</button>

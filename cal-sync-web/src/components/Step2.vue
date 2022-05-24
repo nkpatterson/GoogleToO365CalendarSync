@@ -36,7 +36,7 @@ export default defineComponent({
 </script>
 <template>
     <ProgressBar :current-step="2" />
-    <h1>Step 2</h1>
+    <h1>Step 2 - Google Calendar</h1>
     <Instructions text="On this step, you will establish a connection to your Google calendar. Click the Login to Google button below and login with your @github.com Google credentials in order to authorize access to the application." />
     <p>{{ wizardState.message }}</p>
     <button @click="proceed" class="btn btn__primary btn__lg">Login to Google</button>

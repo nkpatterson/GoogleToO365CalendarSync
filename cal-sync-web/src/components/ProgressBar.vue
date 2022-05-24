@@ -30,6 +30,7 @@ export default defineComponent({
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        font-size: .8em;
     }
     .stepper-item {
         position: relative;
@@ -48,7 +49,7 @@ export default defineComponent({
         content: "";
         border-bottom: 2px solid #ccc;
         width: 100%;
-        top: 20px;
+        top: 15px;
         left: -50%;
         z-index: 2;
     }
@@ -58,7 +59,7 @@ export default defineComponent({
         content: "";
         border-bottom: 2px solid #ccc;
         width: 100%;
-        top: 20px;
+        top: 15px;
         left: 50%;
         z-index: 2;
     }
@@ -69,8 +70,8 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         border-color: #ccc;
         border-width: 2px;
@@ -99,7 +100,7 @@ export default defineComponent({
         content: "";
         border-bottom: 2px solid #4bb543;
         width: 100%;
-        top: 20px;
+        top: 15px;
         left: 50%;
         z-index: 3;
     }

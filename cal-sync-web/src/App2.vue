@@ -107,7 +107,51 @@
   margin: 0;
   margin-bottom: 1rem;
 }
+
+#logo {
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+#logo #gcal {
+  float: left;
+}
+
+#logo #gcal img {
+  width: 35px;
+}
+
+#logo #o365 { 
+  float: left;
+}
+
+#logo #o365 img {
+  width: 37px;
+}
+
+#logo #divider {
+    float: left;
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#logo #app-title {
+    font-size: 1.1em;
+    margin-left: 8px;
+    float: left;
+    font-weight: bold;
+    margin-top: 2px;
+}
 </style>
 <template>
+    <div id="logo">
+      <div id="gcal"><img src="/src/assets/google-calendar.svg" /></div>
+      <div id="divider">&lt;-&gt;</div>
+      <div id="o365"><img src="/src/assets/outlook.png" /></div>
+      <div id="app-title">Wombat Calendar Sync Engine</div>
+      <div style="clear:both;"></div>
+    </div>
     <router-view></router-view>
 </template>
