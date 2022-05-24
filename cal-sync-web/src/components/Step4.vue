@@ -38,8 +38,8 @@ export default defineComponent({
 <template>
     <ProgressBar :current-step="4" />
     <h1>Step 4</h1>
-    <Instructions text="This is the final step towards enlightement. Please provide your Google Calendar email address ([alias]@github.com)." />
+    <Instructions text="This is the last step where we will provision the sync service. Please provide your Google Calendar email address ([alias]@github.com) in the box below before clicking the Proceed button." />
     <p>{{ wizardState.message }}</p>
-    <input type="text" v-model.trim="wizardState.googleCalendarId" placeholder="[alias]@github.com" /><br/>
-    <button @click="proceed">Proceed</button>
+    <input type="text" v-model.trim="wizardState.googleCalendarId" placeholder="[alias]@github.com" class="input__lg" /><br/>
+    <button @click="proceed" class="btn btn__primary btn__lg">Proceed</button>
 </template>

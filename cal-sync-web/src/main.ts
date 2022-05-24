@@ -9,6 +9,7 @@ import Step4 from './components/Step4.vue'
 import Step5 from './components/Step5.vue'
 import Invalid from './components/Invalid.vue'
 import ConsentProvided from './components/ConsentProvided.vue'
+import './assets/reset.css';
 
 // 1. Define route components.
 // These can be imported from other files

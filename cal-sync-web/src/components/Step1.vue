@@ -29,7 +29,7 @@ export default defineComponent({
 <template>
     <ProgressBar :current-step="1" />
     <h1>Step 1</h1>
-    <Instructions text="This is the first step towards enlightenment." />
+    <Instructions text="This wizard will walk you through a series of steps that will create a synchronization service between your Google and Office 365 calendars. Click on the Proceed button below to get started." />
     <p>{{ wizardState.message }}</p>
-    <button @click="proceed">Proceed</button>
+    <button @click="proceed" class="btn btn__primary btn__lg">Proceed</button>
 </template>
