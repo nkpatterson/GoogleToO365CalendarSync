@@ -23,11 +23,11 @@ export default defineComponent({
       
       let consentWindow = window.open(conn.ConsentLink, "", "width=500,height=600,menubar=no,toolbar=no,popup=yes");
       var timer = setInterval(function() { 
-          if(consentWindow != null && consentWindow.closed) {
-              clearInterval(timer);
-              rtr.push('/o365');
-          }
-      }, 1000);
+        if(consentWindow != null && consentWindow.closed) {
+            clearInterval(timer);
+            rtr.push('/o365');
+        }
+      }, 500);
     },
   },
   mounted() {
