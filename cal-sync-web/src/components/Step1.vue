@@ -27,10 +27,9 @@ export default defineComponent({
 });
 </script>
 <template>
-    <ProgressBar />
-    <Instructions />
+    <ProgressBar :current-step="1" />
     <h1>Step 1</h1>
-    <p>This is the first step towards enlightenment.</p>
+    <Instructions text="This is the first step towards enlightenment." />
     <p>{{ wizardState.message }}</p>
     <button @click="proceed">Proceed</button>
 </template>

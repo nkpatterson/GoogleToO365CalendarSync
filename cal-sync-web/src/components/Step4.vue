@@ -36,10 +36,9 @@ export default defineComponent({
 });
 </script>
 <template>
-    <ProgressBar />
-    <Instructions />
+    <ProgressBar :current-step="4" />
     <h1>Step 4</h1>
-    <p>This is the final step towards enlightement. Please provide your Google Calendar email address ([alias]@github.com).</p>
+    <Instructions text="This is the final step towards enlightement. Please provide your Google Calendar email address ([alias]@github.com)." />
     <p>{{ wizardState.message }}</p>
     <input type="text" v-model.trim="wizardState.googleCalendarId" placeholder="[alias]@github.com" /><br/>
     <button @click="proceed">Proceed</button>

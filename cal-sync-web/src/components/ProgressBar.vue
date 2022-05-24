@@ -1,24 +1,26 @@
+<script setup lang="ts">
+import { defineComponent } from 'vue'
+</script>
+<script lang="ts">
+export default defineComponent({
+  props: {
+      currentStep: {
+          type: Number,
+          default: 1
+      }
+  },
+  data() {
+    return {
+        steps: ["Start", "Google", "Office 365", "Deploy", "Done"]
+    }
+  }
+});
+</script>
 <template>
     <div class="stepper-wrapper">
-        <div class="stepper-item completed">
-            <div class="step-counter">1</div>
-            <div class="step-name">First</div>
-        </div>
-        <div class="stepper-item completed">
-            <div class="step-counter">2</div>
-            <div class="step-name">Second</div>
-        </div>
-        <div class="stepper-item active">
-            <div class="step-counter">3</div>
-            <div class="step-name">Third</div>
-        </div>
-        <div class="stepper-item">
-            <div class="step-counter">4</div>
-            <div class="step-name">Forth</div>
-        </div>
-        <div class="stepper-item">
-            <div class="step-counter">4</div>
-            <div class="step-name">Forth</div>
+        <div v-for="(step, index) in steps" class="stepper-item" :class="{ active: (index + 1 == currentStep), completed: (index + 1 < currentStep) }">
+            <div class="step-counter">{{ index + 1 }}</div>
+            <div class="step-name">{{ step }}</div>
         </div>
     </div>
 </template>

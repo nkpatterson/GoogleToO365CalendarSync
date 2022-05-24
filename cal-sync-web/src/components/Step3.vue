@@ -35,10 +35,9 @@ export default defineComponent({
 });
 </script>
 <template>
-    <ProgressBar />
-    <Instructions />
+    <ProgressBar :current-step="3" />
     <h1>Step 3</h1>
-    <p>This is the third step towards enlightenment. You must login with your @microsoft.com Microsoft O365 credentials.</p>
+    <Instructions text="This is the third step towards enlightenment. You must login with your @microsoft.com Microsoft O365 credentials." />
     <p>{{ wizardState.message }}</p>
     <button @click="proceed">Login to Office 365</button>
 </template>

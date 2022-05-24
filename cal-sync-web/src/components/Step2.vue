@@ -35,10 +35,9 @@ export default defineComponent({
 });
 </script>
 <template>
-    <ProgressBar />
-    <Instructions />
+    <ProgressBar :current-step="2" />
     <h1>Step 2</h1>
-    <p>This is the second step towards enlightenment. You must login with your @github.com Google credentials.</p>
+    <Instructions text="This is the second step towards enlightenment. You must login with your @github.com Google credentials." />
     <p>{{ wizardState.message }}</p>
     <button @click="proceed">Login to Google</button>
 </template>
