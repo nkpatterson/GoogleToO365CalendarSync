@@ -295,7 +295,7 @@
                                     }
                                 },
                                 "method": "get",
-                                "path": "/trigger4/calendars/@{encodeURIComponent(parameters('googleCalendarId'))}/events"
+                                "path": "/trigger4/calendars/@{encodeURIComponent(parameters('$googleCalendarId'))}/events"
                             },
                             "recurrence": {
                                 "frequency": "Minute",
