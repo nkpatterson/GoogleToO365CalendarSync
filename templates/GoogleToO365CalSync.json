@@ -30,92 +30,43 @@
                 "state": "Enabled",
                 "definition": {
                     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {
-                        "$connections": {
-                            "defaultValue": {},
-                            "type": "Object"
-                        },
-                        "$googleCalendarId": {
-                            "defaultValue": "",
-                            "type": "String"
-                        }
-                    },
-                    "triggers": {
-                        "When_an_event_is_added_to_a_calendar": {
-                            "recurrence": {
-                                "frequency": "Minute",
-                                "interval": 3
-                            },
-                            "evaluatedRecurrence": {
-                                "frequency": "Minute",
-                                "interval": 3
-                            },
-                            "splitOn": "@triggerBody()?['items']",
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['googlecalendar']['connectionId']"
-                                    }
-                                },
-                                "method": "get",
-                                "path": "/trigger1/calendars/@{encodeURIComponent(parameters('$googleCalendarId'))}/events"
-                            }
-                        }
-                    },
                     "actions": {
                         "Condition": {
                             "actions": {
                                 "Terminate": {
-                                    "runAfter": {},
-                                    "type": "Terminate",
                                     "inputs": {
                                         "runStatus": "Succeeded"
-                                    }
+                                    },
+                                    "runAfter": {},
+                                    "type": "Terminate"
                                 }
                             },
-                            "runAfter": {},
                             "expression": {
                                 "and": [
                                     {
                                         "startsWith": [
                                             "@triggerBody()?['summary']",
-                                            "MSFT EVENT:"
+                                            "MSFT:"
                                         ]
                                     }
                                 ]
                             },
+                            "runAfter": {},
                             "type": "If"
                         },
-                        "For_each": {
-                            "foreach": "@body('Get_calendars_(V2)')?['value']",
+                        "For_each_2": {
                             "actions": {
-                                "Condition_2": {
+                                "Condition_3": {
                                     "actions": {
-                                        "Create_event_(V4)": {
-                                            "runAfter": {},
-                                            "type": "ApiConnection",
+                                        "Set_variable": {
                                             "inputs": {
-                                                "body": {
-                                                    "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}</p>",
-                                                    "end": "@triggerBody()?['end']",
-                                                    "showAs": "busy",
-                                                    "start": "@triggerBody()?['start']",
-                                                    "subject": "GH EVENT: @{triggerBody()?['summary']}",
-                                                    "timeZone": "(UTC) Coordinated Universal Time"
-                                                },
-                                                "host": {
-                                                    "connection": {
-                                                        "name": "@parameters('$connections')['office365']['connectionId']"
-                                                    }
-                                                },
-                                                "method": "post",
-                                                "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(item().id))}/items"
-                                            }
+                                                "name": "o365CalendarId",
+                                                "value": "@items('For_each_2')?['id']"
+                                            },
+                                            "runAfter": {},
+                                            "type": "SetVariable"
                                         }
                                     },
-                                    "runAfter": {},
                                     "expression": {
                                         "and": [
                                             {
@@ -126,23 +77,19 @@
                                             }
                                         ]
                                     },
+                                    "runAfter": {},
                                     "type": "If"
                                 }
                             },
+                            "foreach": "@body('Get_calendars_(V2)_2')?['value']",
                             "runAfter": {
-                                "Get_calendars_(V2)": [
+                                "Get_calendars_(V2)_2": [
                                     "Succeeded"
                                 ]
                             },
                             "type": "Foreach"
                         },
-                        "Get_calendars_(V2)": {
-                            "runAfter": {
-                                "Condition": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ApiConnection",
+                        "Get_calendars_(V2)_2": {
                             "inputs": {
                                 "host": {
                                     "connection": {
@@ -156,10 +103,208 @@
                                     "skip": 0,
                                     "top": 256
                                 }
-                            }
+                            },
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection"
+                        },
+                        "Initialize_variable": {
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "o365CalendarId",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "runAfter": {
+                                "Condition": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable"
+                        },
+                        "Switch": {
+                            "cases": {
+                                "Case": {
+                                    "actions": {
+                                        "Create_event_(V4)": {
+                                            "inputs": {
+                                                "body": {
+                                                    "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
+                                                    "end": "@triggerBody()?['end']",
+                                                    "sensitivity": "private",
+                                                    "showAs": "busy",
+                                                    "start": "@triggerBody()?['start']",
+                                                    "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                    "timeZone": "(UTC) Coordinated Universal Time"
+                                                },
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items"
+                                            },
+                                            "runAfter": {},
+                                            "type": "ApiConnection"
+                                        }
+                                    },
+                                    "case": "added"
+                                },
+                                "Case_2": {
+                                    "actions": {
+                                        "For_each": {
+                                            "actions": {
+                                                "Update_event_(V4)": {
+                                                    "inputs": {
+                                                        "body": {
+                                                            "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
+                                                            "end": "@triggerBody()?['end']",
+                                                            "sensitivity": "private",
+                                                            "showAs": "busy",
+                                                            "start": "@triggerBody()?['start']",
+                                                            "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                            "timeZone": "(UTC) Coordinated Universal Time"
+                                                        },
+                                                        "host": {
+                                                            "connection": {
+                                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                                            }
+                                                        },
+                                                        "method": "patch",
+                                                        "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items/@{encodeURIComponent(encodeURIComponent(items('For_each')?['id']))}"
+                                                    },
+                                                    "runAfter": {},
+                                                    "type": "ApiConnection"
+                                                }
+                                            },
+                                            "foreach": "@body('Get_events_(V4)')?['value']",
+                                            "runAfter": {
+                                                "Get_events_(V4)": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Foreach"
+                                        },
+                                        "Get_events_(V4)": {
+                                            "inputs": {
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "get",
+                                                "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items",
+                                                "queries": {
+                                                    "$filter": "contains(subject, '@{triggerBody()?['id']}')",
+                                                    "$top": 1
+                                                }
+                                            },
+                                            "runAfter": {},
+                                            "type": "ApiConnection"
+                                        }
+                                    },
+                                    "case": "updated"
+                                },
+                                "Case_3": {
+                                    "actions": {
+                                        "For_each_3": {
+                                            "actions": {
+                                                "Delete_event_(V2)": {
+                                                    "inputs": {
+                                                        "host": {
+                                                            "connection": {
+                                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                                            }
+                                                        },
+                                                        "method": "delete",
+                                                        "path": "/codeless/v1.0/me/calendars/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/events/@{encodeURIComponent(encodeURIComponent(items('For_each_3')?['id']))}"
+                                                    },
+                                                    "runAfter": {},
+                                                    "type": "ApiConnection"
+                                                }
+                                            },
+                                            "foreach": "@body('Get_events_(V4)_2')?['value']",
+                                            "runAfter": {
+                                                "Get_events_(V4)_2": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Foreach"
+                                        },
+                                        "Get_events_(V4)_2": {
+                                            "inputs": {
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "get",
+                                                "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items",
+                                                "queries": {
+                                                    "$filter": "contains(subject, '@{triggerBody()?['id']}')",
+                                                    "$top": 1
+                                                }
+                                            },
+                                            "runAfter": {},
+                                            "type": "ApiConnection"
+                                        }
+                                    },
+                                    "case": "deleted"
+                                }
+                            },
+                            "default": {
+                                "actions": {}
+                            },
+                            "expression": "@triggerBody()?['actionType']",
+                            "runAfter": {
+                                "For_each_2": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Switch"
                         }
                     },
-                    "outputs": {}
+                    "contentVersion": "1.0.0.0",
+                    "outputs": {},
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "googleCalendarId": {
+                            "defaultValue": "",
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "When_an_event_is_added,_updated_or_deleted_from_a_calendar": {
+                            "evaluatedRecurrence": {
+                                "frequency": "Minute",
+                                "interval": 3
+                            },
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['googlecalendar']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/trigger4/calendars/@{encodeURIComponent(parameters('googleCalendarId'))}/events"
+                            },
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 3
+                            },
+                            "splitOn": "@triggerBody()?['items']",
+                            "type": "ApiConnection"
+                        }
+                    }
                 },
                 "parameters": {
                     "$connections": {
