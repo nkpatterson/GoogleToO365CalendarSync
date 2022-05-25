@@ -277,7 +277,7 @@
                             "defaultValue": {},
                             "type": "Object"
                         },
-                        "googleCalendarId": {
+                        "$googleCalendarId": {
                             "defaultValue": "",
                             "type": "String"
                         }
