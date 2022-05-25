@@ -132,7 +132,6 @@
 #logo #divider {
     float: left;
     font-size: 1.2em;
-    font-weight: 700;
     margin-left: 4px;
     margin-right: 4px;
 }
@@ -152,7 +151,7 @@
 <template>
     <div id="logo">
       <div id="gcal"><img src="/src/assets/google-calendar.svg" /></div>
-      <div id="divider">&lt;-&gt;</div>
+      <div id="divider">{--}</div>
       <div id="o365"><img src="/src/assets/outlook.png" /></div>
       <div id="app-title">Wombat Calendar Sync Engine</div>
       <div style="clear:both;"></div>
