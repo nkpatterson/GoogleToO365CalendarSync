@@ -17,6 +17,7 @@ class Api {
     // apiUrlBase: string = import.meta.env.VITE_FUNCTIONS_HOST_URL + "/api/";
     apiUrlBase: string = "/api/";
     functionsHostKey: string = import.meta.env.VITE_FUNCTIONS_HOST_KEY;
+    currentUsername: string = "";
 
     public getConsentCodeFromUrl(url: string): string {
         let regex = new RegExp('(code=)(.*)$');
@@ -29,13 +30,17 @@ class Api {
     }
 
     public async getCurrentUsername():Promise<string> {
+        if (this.currentUsername != "")
+            return this.currentUsername;
+
         let response = await fetch('/.auth/me');
         let payload = await response.json();
         
-        if (payload.clientPrincipal != null)
-            return payload.clientPrincipal.userDetails;
+        if (payload.clientPrincipal != null) {
+            this.currentUsername = payload.clientPrincipal.userDetails;
+        }
 
-        return "";
+        return this.currentUsername;
     }
 
     public async getCurrentAlias(): Promise<string> {

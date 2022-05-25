@@ -4,6 +4,7 @@ import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
 import { Api } from './services/api-service'
+import { wizardState } from './components/wizard-state';
 import App from './App2.vue'
 import Step1 from './components/Step1.vue'
 import Step2 from './components/Step2.vue'
@@ -14,13 +15,6 @@ import Invalid from './components/Invalid.vue'
 import ConsentProvided from './components/ConsentProvided.vue'
 import './assets/reset.css';
 
-// 1. Define route components.
-// These can be imported from other files
-// const Step1 = { template: './components/Step1.vue' }
-
-// 2. Define some routes
-// Each route should map to a component.
-// We'll talk about nested routes later.
 const routes = [
   { path: '/', component: Step1 },
   { path: '/google', component: Step2 },
@@ -31,32 +25,32 @@ const routes = [
   { path: '/consentProvided', component: ConsentProvided }
 ]
 
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
 const router = createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHashHistory(),
   routes, // short for `routes: routes`
 });
 
-// 5. Create and mount the root instance.
-const app = createApp(App)
-// Make sure to _use_ the router instance to make the
-// whole app router-aware.
-app.use(router).use(VueLoading);
-
-app.mount('#app')
-
-// Now the app has started!
-let api = new Api();
-api.getCurrentUsername().then((user) => {
+router.beforeEach(async (to, from) => {
+  let api = new Api();
+  let user = await api.getCurrentUsername();
   if (user == "") {
     window.location.href = "/.auth/login/aad";
+    return false;
   }
-  api.isValidUser().then((result) => {
-    if (!result) {
-      router.push("/invalid");
-    }
-  })
+
+  let isValid = await api.isValidUser()
+  if (!isValid && to.path != "/invalid") {
+     return "/invalid";
+  }
+
+  // Start the wizard over if we lose state in the middle somehow
+  if (wizardState.rgName == "" && to.path != "/" && to.path != "/invalid") {
+    return "/";
+  }
+
+  return true;
 });
+
+const app = createApp(App)
+app.use(router).use(VueLoading)
+app.mount('#app')

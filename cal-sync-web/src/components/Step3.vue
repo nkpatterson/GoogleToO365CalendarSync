@@ -20,7 +20,6 @@ export default defineComponent({
       let conn = await api.createExternalConnection(CalendarApi.Office365Calendar, this.wizardState.userAlias, this.wizardState.rgName);
       this.wizardState.office365ResourceId = conn.ResourceId;
 
-      let wzd = this.wizardState;
       let rtr = this.$router;
       
       let consentWindow = window.open(conn.ConsentLink, "", "width=500,height=600,menubar=no,toolbar=no,popup=yes");
