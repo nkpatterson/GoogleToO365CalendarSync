@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workflowName": {
-            "defaultValue": "[concat('GoogleToO365Create', uniqueString(resourceGroup().id))]",
+            "defaultValue": "[concat('GoogleToO365', uniqueString(resourceGroup().id))]",
             "type": "string"
         },
         "googleCalendarExternalId": {
