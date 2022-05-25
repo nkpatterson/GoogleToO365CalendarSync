@@ -44,7 +44,7 @@ router.beforeEach(async (to, from) => {
   }
 
   // Start the wizard over if we lose state in the middle somehow
-  if (wizardState.rgName == "" && to.path != "/" && to.path != "/invalid") {
+  if (wizardState.rgName == "" && to.path != "/" && to.path != "/invalid" && to.path != "/consentProvided") {
     return "/";
   }
 
