@@ -110,7 +110,7 @@
 
 #logo {
     margin-bottom: 25px;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 #logo #gcal {
@@ -133,23 +133,24 @@
 
 #logo #divider {
     float: left;
-    font-size: 1.2em;
-    margin-left: 4px;
+    font-size: 1.7em;
+    margin-left: 8px;
     margin-right: 4px;
+    margin-top: 1px;
+    color: #3e7cd2;
 }
 
 #logo #divider img {
-    width: 30px;
+    width: 45px;
     vertical-align: bottom;
     padding-bottom: 3px;
 }
 
 #logo #app-title {
-    font-size: 1.1em;
-    margin-left: 8px;
+    font-size: 1.8em;
+    margin-left: 4px;
     float: left;
-    font-weight: bold;
-    margin-top: 2px;
+    font-family: serif;
 }
 
 .btn-bar {
@@ -158,9 +159,7 @@
 </style>
 <template>
     <div id="logo">
-      <div id="gcal"><img src="/src/assets/google-calendar.svg" alt="Google Calendar logo" /></div>
       <div id="divider">{<img src="/src/assets/wombat.png" alt="Wombat logo" />}</div>
-      <div id="o365"><img src="/src/assets/outlook.png" alt="Outlook logo" /></div>
       <div id="app-title">Wombat Calendar Sync Engine</div>
       <div style="clear:both;"></div>
     </div>
