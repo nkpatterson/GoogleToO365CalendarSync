@@ -159,7 +159,7 @@
 </style>
 <template>
     <div id="logo">
-      <div id="divider">{<img src="/src/assets/wombat.png" alt="Wombat logo" />}</div>
+      <div id="divider">{<img src="/wombat.png" alt="Wombat logo" />}</div>
       <div id="app-title">Wombat Calendar Sync Engine</div>
       <div style="clear:both;"></div>
     </div>
