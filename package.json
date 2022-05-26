@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "cal-sync-web": "file:cal-sync-web"
+  }
+}
