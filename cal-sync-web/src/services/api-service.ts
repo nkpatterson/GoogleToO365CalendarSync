@@ -54,7 +54,7 @@ class Api {
 
     public async isValidUser(): Promise<boolean> {
         let username = await this.getCurrentUsername();
-        return username.endsWith("@microsoft.com");
+        return username.endsWith("@github.com");
     }
 
     public async createResourceGroup(username: string): Promise<string> {

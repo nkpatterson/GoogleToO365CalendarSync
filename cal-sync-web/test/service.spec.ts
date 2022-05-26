@@ -21,14 +21,14 @@ describe("Consent code handling", () => {
 });
 
 describe("Logged in user information", () => {
-    it("should return valid user with @microsoft.com address", async () => {
+    it("should return valid user with @github.com address", async () => {
         let svc = new Api();
         let mockFetch = vi.fn().mockImplementationOnce(() => {
             return {
                 json: vi.fn().mockImplementationOnce(() => {
                     return {
                         clientPrincipal: {
-                            userDetails: "nipatter@microsoft.com"
+                            userDetails: "nkpatterson@github.com"
                         }
                     }
                 })
@@ -66,7 +66,7 @@ describe("Logged in user information", () => {
                 json: vi.fn().mockImplementationOnce(() => {
                     return {
                         clientPrincipal: {
-                            userDetails: "nipatter@microsoft.com"
+                            userDetails: "nkpatterson@github.com"
                         }
                     }
                 })
@@ -75,7 +75,7 @@ describe("Logged in user information", () => {
         global.fetch = mockFetch;
 
         let result = await svc.getCurrentAlias();
-        expect(result).toBe("nipatter");
+        expect(result).toBe("nkpatterson");
     });
 
     it("should return nothing if user not logged in", async () => {
