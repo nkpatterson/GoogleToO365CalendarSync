@@ -46,7 +46,7 @@ class Api {
         if (this.clientPrincipal.IsInitialized)
             return this.clientPrincipal;
 
-        let response = await fetch('./auth/me');
+        let response = await fetch('/.auth/me');
         let payload = await response.json();
 
         if (payload.clientPrincipal != null) {
