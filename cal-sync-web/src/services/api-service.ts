@@ -15,7 +15,7 @@ class ExternalConnection {
 
 class Api {
     // apiUrlBase: string = import.meta.env.VITE_FUNCTIONS_HOST_URL + "/api/";
-    apiUrlBase: string = "https://nkpatterson-googletoo365calendarsync-q56qrrc49qv-7071.githubpreview.dev/api/";
+    apiUrlBase: string = "/api/";
     functionsHostKey: string = import.meta.env.VITE_FUNCTIONS_HOST_KEY;
     currentUsername: string = "";
 
