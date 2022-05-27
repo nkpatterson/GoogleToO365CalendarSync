@@ -25,7 +25,8 @@
 		"ms-azuretools.vscode-azurestaticwebapps",
 		"ms-azuretools.vscode-docker",
 		"vue.volar",
-		"ZixuanChen.vitest-explorer"
+		"ZixuanChen.vitest-explorer",
+		"ms-vscode.powershell"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -39,6 +40,7 @@
 	"features": {
 		"github-cli": "latest",
 		"azure-cli": "latest",
-		"powershell": "latest"
+		"powershell": "latest",
+		"dotnet": "3.1"
 	}
 }

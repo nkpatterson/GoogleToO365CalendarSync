@@ -1,0 +1,6 @@
+{
+    "azureFunctions.deploySubpath": "cal-sync-funcs",
+    "azureFunctions.projectLanguage": "PowerShell",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen"
+}
