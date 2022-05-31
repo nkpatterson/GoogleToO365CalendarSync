@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
+    "contentVersion": "1.1.0.0",
     "parameters": {
         "workflowName": {
             "defaultValue": "[concat('GoogleToO365', uniqueString(resourceGroup().id))]",
@@ -165,12 +165,11 @@
                                 },
                                 "Case_2": {
                                     "actions": {
-                                        "For_each": {
+                                        "Condition_2": {
                                             "actions": {
-                                                "Update_event_(V4)": {
+                                                "Create_event_(V4)_2": {
                                                     "inputs": {
                                                         "body": {
-                                                            "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
                                                             "end": "@triggerBody()?['end']",
                                                             "sensitivity": "private",
                                                             "showAs": "busy",
@@ -183,20 +182,62 @@
                                                                 "name": "@parameters('$connections')['office365']['connectionId']"
                                                             }
                                                         },
-                                                        "method": "patch",
-                                                        "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items/@{encodeURIComponent(encodeURIComponent(items('For_each')?['id']))}"
+                                                        "method": "post",
+                                                        "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items"
                                                     },
                                                     "runAfter": {},
                                                     "type": "ApiConnection"
                                                 }
                                             },
-                                            "foreach": "@body('Get_events_(V4)')?['value']",
+                                            "else": {
+                                                "actions": {
+                                                    "For_each": {
+                                                        "actions": {
+                                                            "Update_event_(V4)": {
+                                                                "inputs": {
+                                                                    "body": {
+                                                                        "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
+                                                                        "end": "@triggerBody()?['end']",
+                                                                        "sensitivity": "private",
+                                                                        "showAs": "busy",
+                                                                        "start": "@triggerBody()?['start']",
+                                                                        "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                                        "timeZone": "(UTC) Coordinated Universal Time"
+                                                                    },
+                                                                    "host": {
+                                                                        "connection": {
+                                                                            "name": "@parameters('$connections')['office365']['connectionId']"
+                                                                        }
+                                                                    },
+                                                                    "method": "patch",
+                                                                    "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items/@{encodeURIComponent(encodeURIComponent(items('For_each')?['id']))}"
+                                                                },
+                                                                "runAfter": {},
+                                                                "type": "ApiConnection"
+                                                            }
+                                                        },
+                                                        "foreach": "@body('Get_events_(V4)')?['value']",
+                                                        "runAfter": {},
+                                                        "type": "Foreach"
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "equals": [
+                                                            "@length(body('Get_events_(V4)')?['value'])",
+                                                            0
+                                                        ]
+                                                    }
+                                                ]
+                                            },
                                             "runAfter": {
                                                 "Get_events_(V4)": [
                                                     "Succeeded"
                                                 ]
                                             },
-                                            "type": "Foreach"
+                                            "type": "If"
                                         },
                                         "Get_events_(V4)": {
                                             "inputs": {
