@@ -5,6 +5,7 @@ param($Request, $TriggerMetadata)
 
 $subscriptionId = $env:AZURE_SUBSCRIPTION_ID
 $ResourceLocation = $env:AZURE_RESOURCE_LOCATION
+$AppName = $env:APP_NAME
 
 $api = $Request.Query.api #"office365 | googlecalendar"
 $username = $Request.Query.username
@@ -14,7 +15,9 @@ $ResourceGroupName = $Request.Query.rgName
 $ConnectionName = $username + $api
 
 Write-Host "Creating Azure Resources"
-$connection = New-AzureRmResource -Properties @{"api" = @{"id" = "subscriptions/" + $subscriptionId + "/providers/Microsoft.Web/locations/" + $ResourceLocation + "/managedApis/" + $api}; "displayName" = $ConnectionName; } -ResourceName $ConnectionName -ResourceType "Microsoft.Web/connections" -ResourceGroupName $ResourceGroupName -Location $ResourceLocation -Force
+$connection = New-AzureRmResource -Properties @{"api" = @{"id" = "subscriptions/" + $subscriptionId + "/providers/Microsoft.Web/locations/" + $ResourceLocation + "/managedApis/" + $api}; "displayName" = $ConnectionName; } `
+	-ResourceName $ConnectionName -ResourceType "Microsoft.Web/connections" `
+	-ResourceGroupName $ResourceGroupName -Location $ResourceLocation -Tag @{AppName=$AppName} -Force
 
 Write-Host "Connection status: " $connection.Properties.Statuses[0]
 
