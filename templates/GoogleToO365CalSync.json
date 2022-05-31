@@ -32,7 +32,7 @@
             "apiVersion": "2017-07-01",
             "name": "[parameters('workflowName')]",
             "location": "[resourceGroup().location]",
-            "tags": "[union(parameters('tags'),json(concat('{\"LogicAppVersion\":\"', deployment().properties.template.contentVersion, '\"}'))]",
+            "tags": "[union(parameters('tags'),json(concat('{\"LogicAppVersion\":\"', deployment().properties.template.contentVersion, '\"}')))]",
             "properties": {
                 "state": "Enabled",
                 "definition": {
