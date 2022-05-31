@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
 import { Api } from './services/api-service'
 import { wizardState } from './components/wizard-state';
@@ -14,6 +15,14 @@ import Step5 from './components/Step5.vue'
 import Invalid from './components/Invalid.vue'
 import ConsentProvided from './components/ConsentProvided.vue'
 import './assets/reset.css';
+
+const appInsights = new ApplicationInsights({ config: {
+  connectionString: 'InstrumentationKey=36613f09-4457-41bd-8a00-90ffc1868bbc;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/',
+  enableAutoRouteTracking: true,
+  autoTrackPageVisitTime: true  
+} });
+appInsights.loadAppInsights();
+appInsights.trackPageView();
 
 const routes = [
   { path: '/', component: Step1 },
