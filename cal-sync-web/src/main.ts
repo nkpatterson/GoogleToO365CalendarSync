@@ -16,6 +16,7 @@ import Invalid from './components/Invalid.vue'
 import ConsentProvided from './components/ConsentProvided.vue'
 import './assets/reset.css';
 
+const baseName = "Wombat Calendar Sync";
 const appInsights = new ApplicationInsights({ config: {
   connectionString: 'InstrumentationKey=36613f09-4457-41bd-8a00-90ffc1868bbc;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/',
   enableAutoRouteTracking: true,
@@ -25,13 +26,13 @@ appInsights.loadAppInsights();
 appInsights.trackPageView();
 
 const routes = [
-  { path: '/', component: Step1 },
-  { path: '/google', component: Step2 },
-  { path: '/o365', component: Step3 },
-  { path: '/provision', component: Step4 },
-  { path: '/finish', component: Step5 },
-  { path: '/invalid', component: Invalid },
-  { path: '/consentProvided', component: ConsentProvided }
+  { name: 'Home', path: '/', component: Step1 },
+  { name: 'Google Setup', path: '/google', component: Step2 },
+  { name: 'O365 Setup', path: '/o365', component: Step3 },
+  { name: 'Provision', path: '/provision', component: Step4 },
+  { name: 'Finished', path: '/finish', component: Step5 },
+  { name: 'Invalid', path: '/invalid', component: Invalid },
+  { name: 'Consent Provided', path: '/consentProvided', component: ConsentProvided }
 ]
 
 const router = createRouter({
@@ -57,7 +58,16 @@ router.beforeEach(async (to, from) => {
     return "/";
   }
 
+  const name = baseName + ' / ' + to.name?.toString();
+  appInsights.startTrackPage(name);
+
   return true;
+});
+
+router.afterEach(async (to, from) => {
+  const name = baseName + ' / ' + to.name?.toString();
+  const url = location.protocol + '//' + location.host + to.fullPath;
+  appInsights.stopTrackPage(name, url);
 });
 
 const app = createApp(App)
