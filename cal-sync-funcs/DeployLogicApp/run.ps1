@@ -11,7 +11,8 @@ $googleCalendarId = $Request.Query.googleCalendarId
 $office365ResourceId = $Request.Query.office365ResourceId
 
 New-AzResourceGroupDeployment -Name "DeployGoogleToO365CalSync" -ResourceGroupName $rgName `
-    -TemplateUri $templateUri -Force -Tag @{AppName=$AppName} `
+    -TemplateUri $templateUri -Force `
+    -tags @{AppName=$AppName;User=$googleCalendarId} `
     -googleCalendarExternalId $googleResourceId `
     -office365ExternalId $office365ResourceId `
     -googleCalendarId $googleCalendarId `
