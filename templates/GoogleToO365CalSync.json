@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.2.0.0",
+    "contentVersion": "1.2.1.0",
     "parameters": {
         "workflowName": {
             "defaultValue": "[concat('GoogleToO365', uniqueString(resourceGroup().id))]",
@@ -141,14 +141,14 @@
                                         "Create_event_(V4)": {
                                             "inputs": {
                                                 "body": {
-                                                    "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
+                                                    "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n</p>",
                                                     "end": "@triggerBody()?['end']",
                                                     "isAllDay": "@if(equals(indexOf(triggerBody()?['start'], ':'), -1), true, false)",
                                                     "isReminderOn": false,
                                                     "sensitivity": "private",
                                                     "showAs": "busy",
                                                     "start": "@triggerBody()?['start']",
-                                                    "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                    "subject": "@{triggerBody()?['summary']} (@{triggerBody()?['id']})",
                                                     "timeZone": "(UTC) Coordinated Universal Time"
                                                 },
                                                 "host": {
@@ -178,7 +178,7 @@
                                                             "sensitivity": "private",
                                                             "showAs": "busy",
                                                             "start": "@triggerBody()?['start']",
-                                                            "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                            "subject": "@{triggerBody()?['summary']} (@{triggerBody()?['id']})",
                                                             "timeZone": "(UTC) Coordinated Universal Time"
                                                         },
                                                         "host": {
@@ -200,14 +200,14 @@
                                                             "Update_event_(V4)": {
                                                                 "inputs": {
                                                                     "body": {
-                                                                        "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n<br>\nEvent ID:@{triggerBody()?['id']}</p>",
+                                                                        "body": "<p>@{triggerBody()?['attendees']}<br>\n<br>\n@{triggerBody()?['description']}<br>\n</p>",
                                                                         "end": "@triggerBody()?['end']",
                                                                         "isAllDay": "@if(equals(indexOf(triggerBody()?['start'], ':'), -1), true, false)",
                                                                         "isReminderOn": false,
                                                                         "sensitivity": "private",
                                                                         "showAs": "busy",
                                                                         "start": "@triggerBody()?['start']",
-                                                                        "subject": "GH Event: @{triggerBody()?['summary']} (@{triggerBody()?['id']})",
+                                                                        "subject": "@{triggerBody()?['summary']} (@{triggerBody()?['id']})",
                                                                         "timeZone": "(UTC) Coordinated Universal Time"
                                                                     },
                                                                     "host": {
