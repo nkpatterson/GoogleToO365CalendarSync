@@ -6,7 +6,7 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
 import { Api } from './services/api-service'
 import { wizardState } from './components/wizard-state';
-import App from './App2.vue'
+import App from './App.vue'
 import Step1 from './components/Step1.vue'
 import Step2 from './components/Step2.vue'
 import Step3 from './components/Step3.vue'
