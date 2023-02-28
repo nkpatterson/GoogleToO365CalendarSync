@@ -153,6 +153,13 @@
     font-family: serif;
 }
 
+#contact {
+  margin-top: 4em;
+  text-align: center;
+  font-size: 0.7em;
+  color: #4d4d4d;
+}
+
 .btn-bar {
   text-align: center;
 }
@@ -164,4 +171,7 @@
       <div style="clear:both;"></div>
     </div>
     <router-view></router-view>
+    <div id="contact">
+      Created and maintained by <a href="https://github.com/nkpatterson">@nkpatterson</a>
+    </div>
 </template>
