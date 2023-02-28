@@ -43,5 +43,10 @@
 		"azure-cli": "latest",
 		"powershell": "latest",
 		"dotnet": "3.1"
+	},
+	"portsAttributes": {
+		"4280": {
+			"label": "swa"
+		}
 	}
 }
