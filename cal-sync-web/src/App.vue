@@ -163,6 +163,10 @@
 .btn-bar {
   text-align: center;
 }
+
+.sml-text {
+  font-size: 0.8em;
+}
 </style>
 <template>
     <div id="logo">
@@ -172,6 +176,6 @@
     </div>
     <router-view></router-view>
     <div id="contact">
-      Created and maintained by <a href="https://github.com/nkpatterson">@nkpatterson</a>
+      Created and maintained by <a href="https://github.com/nkpatterson/GoogleToO365CalendarSync" target="_blank">@nkpatterson</a>
     </div>
 </template>

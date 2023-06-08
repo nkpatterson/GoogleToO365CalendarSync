@@ -30,5 +30,6 @@ export default defineComponent({
     <ProgressBar :current-step="1" />
     <h1>Step 1</h1>
     <Instructions text="This wizard will walk you through a series of steps that will create a synchronization service between your Google and Office 365 calendars. Click on the Proceed button below to get started." />
+    <p class="sml-text">Check out <a href="/demo.gif" target="_blank">this video</a> to see it in action.</p>
     <div class="btn-bar"><button @click="proceed" class="btn btn__primary btn__lg">Proceed</button></div>
 </template>
