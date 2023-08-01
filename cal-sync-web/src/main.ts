@@ -44,7 +44,7 @@ router.beforeEach(async (to, from) => {
   let api = new Api();
   let user = await api.getCurrentUsername();
   if (user == "") {
-    window.location.href = "/.auth/login/aad";
+    window.location.href = "/.auth/login/github";
     return false;
   }
 
