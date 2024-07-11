@@ -116,6 +116,14 @@
                                     "Succeeded"
                                 ]
                             },
+                            "runtimeConfiguration": {
+                              "secureData": {
+                                "properties": [
+                                  "inputs",
+                                  "outputs"
+                                ]
+                              }
+                            },
                             "type": "ApiConnection"
                         },
                         "Initialize_variable": {
@@ -159,6 +167,14 @@
                                                 "method": "post",
                                                 "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items"
                                             },
+                                            "runtimeConfiguration": {
+                                              "secureData": {
+                                                "properties": [
+                                                  "inputs",
+                                                  "outputs"
+                                                ]
+                                              }
+                                            },
                                             "runAfter": {},
                                             "type": "ApiConnection"
                                         }
@@ -189,6 +205,14 @@
                                                         "method": "post",
                                                         "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items"
                                                     },
+                                                    "runtimeConfiguration": {
+                                                      "secureData": {
+                                                        "properties": [
+                                                          "inputs",
+                                                          "outputs"
+                                                        ]
+                                                      }
+                                                    },
                                                     "runAfter": {},
                                                     "type": "ApiConnection"
                                                 }
@@ -217,6 +241,14 @@
                                                                     },
                                                                     "method": "patch",
                                                                     "path": "/datasets/calendars/v4/tables/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/items/@{encodeURIComponent(encodeURIComponent(items('For_each')?['id']))}"
+                                                                },
+                                                                "runtimeConfiguration": {
+                                                                  "secureData": {
+                                                                    "properties": [
+                                                                      "inputs",
+                                                                      "outputs"
+                                                                    ]
+                                                                  }
                                                                 },
                                                                 "runAfter": {},
                                                                 "type": "ApiConnection"
@@ -260,6 +292,14 @@
                                                 }
                                             },
                                             "runAfter": {},
+                                            "runtimeConfiguration": {
+                                              "secureData": {
+                                                "properties": [
+                                                  "inputs",
+                                                  "outputs"
+                                                ]
+                                              }
+                                            },
                                             "type": "ApiConnection"
                                         }
                                     },
@@ -280,6 +320,14 @@
                                                         "path": "/codeless/v1.0/me/calendars/@{encodeURIComponent(encodeURIComponent(variables('o365CalendarId')))}/events/@{encodeURIComponent(encodeURIComponent(items('For_each_3')?['id']))}"
                                                     },
                                                     "runAfter": {},
+                                                    "runtimeConfiguration": {
+                                                      "secureData": {
+                                                        "properties": [
+                                                          "inputs",
+                                                          "outputs"
+                                                        ]
+                                                      }
+                                                    },
                                                     "type": "ApiConnection"
                                                 }
                                             },
@@ -306,6 +354,14 @@
                                                 }
                                             },
                                             "runAfter": {},
+                                            "runtimeConfiguration": {
+                                              "secureData": {
+                                                "properties": [
+                                                  "inputs",
+                                                  "outputs"
+                                                ]
+                                              }
+                                            },
                                             "type": "ApiConnection"
                                         }
                                     },
@@ -354,6 +410,14 @@
                             "recurrence": {
                                 "frequency": "Minute",
                                 "interval": 3
+                            },
+                            "runtimeConfiguration": {
+                              "secureData": {
+                                "properties": [
+                                  "inputs",
+                                  "outputs"
+                                ]
+                              }
                             },
                             "splitOn": "@triggerBody()?['items']",
                             "type": "ApiConnection"
