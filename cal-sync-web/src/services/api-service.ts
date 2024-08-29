@@ -13,11 +13,24 @@ class ExternalConnection {
     }
 }
 
+class ClientPrincipal {
+    public IdentityProvider: string = "";
+    public UserId: string = "";
+    public UserDetails: string = "";
+    public UserRoles: Array<string> = [];
+    public IsInitialized: boolean = false;
+    public Initialize(identifyProvider: string, userId: string, userDetails: string) {
+        this.IdentityProvider = identifyProvider;
+        this.UserId = userId;
+        this.UserDetails = userDetails;
+        this.IsInitialized = true;
+    }
+}
+
 class Api {
-    // apiUrlBase: string = import.meta.env.VITE_FUNCTIONS_HOST_URL + "/api/";
     apiUrlBase: string = "/api/";
     functionsHostKey: string = import.meta.env.VITE_FUNCTIONS_HOST_KEY;
-    currentUsername: string = "";
+    clientPrincipal: ClientPrincipal = new ClientPrincipal();
 
     public getConsentCodeFromUrl(url: string): string {
         let regex = new RegExp('(code=)(.*)$');
@@ -29,19 +42,29 @@ class Api {
         return "";
     }
 
-    public async getCurrentUsername():Promise<string> {
-        if (this.currentUsername != "")
-            return this.currentUsername;
+    public async getClientPrincipal(): Promise<ClientPrincipal> {
+        if (this.clientPrincipal.IsInitialized)
+            return this.clientPrincipal;
 
         let response = await fetch('/.auth/me');
         let payload = await response.json();
-        
+
         if (payload.clientPrincipal != null) {
-            this.currentUsername = payload.clientPrincipal.userDetails;
+            this.clientPrincipal.Initialize(payload.clientPrincipal.identityProvider, 
+                payload.clientPrincipal.userId, payload.clientPrincipal.userDetails);
         }
 
-        return this.currentUsername;
+        return this.clientPrincipal;
     }
+
+    public async getCurrentUsername():Promise<string> {
+        return (await this.getClientPrincipal()).UserDetails;
+    }
+
+    public async getCurrentEmailAddress(): Promise<string> {
+        let client = await this.getClientPrincipal();
+        return `${client.UserDetails}@${client.IdentityProvider}.com`;
+    }    
 
     public async getCurrentAlias(): Promise<string> {
         let username = await this.getCurrentUsername();
@@ -49,12 +72,12 @@ class Api {
             return username.split("@")[0];
         }
 
-        return "";
+        return username;
     }
 
     public async isValidUser(): Promise<boolean> {
-        let username = await this.getCurrentUsername();
-        return username.endsWith("@microsoft.com");
+        let clientPrincipal = await this.getClientPrincipal();
+        return clientPrincipal.IdentityProvider == "github" && clientPrincipal.UserDetails != "";
     }
 
     public async createResourceGroup(username: string): Promise<string> {
@@ -88,4 +111,4 @@ class Api {
     }
 }
 
-export { Api, CalendarApi, ExternalConnection }
+export { Api, CalendarApi, ExternalConnection, ClientPrincipal }

@@ -21,14 +21,15 @@ describe("Consent code handling", () => {
 });
 
 describe("Logged in user information", () => {
-    it("should return valid user with @microsoft.com address", async () => {
+    it("should return valid user with username and id provider", async () => {
         let svc = new Api();
         let mockFetch = vi.fn().mockImplementationOnce(() => {
             return {
                 json: vi.fn().mockImplementationOnce(() => {
                     return {
                         clientPrincipal: {
-                            userDetails: "nipatter@microsoft.com"
+                            userDetails: "nkpatterson",
+                            identityProvider: "github"
                         }
                     }
                 })
@@ -40,14 +41,15 @@ describe("Logged in user information", () => {
         expect(result).toBe(true);
     });
 
-    it("should not validate user with @bad.com address", async () => {
+    it("should not validate user with invalid id provider", async () => {
         let svc = new Api();
         let mockFetch = vi.fn().mockImplementationOnce(() => {
             return {
                 json: vi.fn().mockImplementationOnce(() => {
                     return {
                         clientPrincipal: {
-                            userDetails: "nipatter@badmamajamma.com"
+                            userDetails: "nipatter",
+                            identityProvider: "twitter"
                         }
                     }
                 })
@@ -59,6 +61,26 @@ describe("Logged in user information", () => {
         expect(result).toBe(false);
     });
 
+    it("should return a valid email address", async () => {
+        let api = new Api();
+        let mockFetch = vi.fn().mockImplementationOnce(() => {
+            return {
+                json: vi.fn().mockImplementationOnce(() => {
+                    return {
+                        clientPrincipal: {
+                            userDetails: "nkpatterson",
+                            identityProvider: "github"
+                        }
+                    }
+                })
+            }
+        });
+        global.fetch = mockFetch;
+
+        let result = await api.getCurrentEmailAddress();
+        expect(result).toBe("nkpatterson@github.com");
+    });
+
     it("should return just the alias", async () => {
         let svc = new Api();
         let mockFetch = vi.fn().mockImplementationOnce(() => {
@@ -66,7 +88,7 @@ describe("Logged in user information", () => {
                 json: vi.fn().mockImplementationOnce(() => {
                     return {
                         clientPrincipal: {
-                            userDetails: "nipatter@microsoft.com"
+                            userDetails: "nkpatterson"
                         }
                     }
                 })
@@ -75,7 +97,7 @@ describe("Logged in user information", () => {
         global.fetch = mockFetch;
 
         let result = await svc.getCurrentAlias();
-        expect(result).toBe("nipatter");
+        expect(result).toBe("nkpatterson");
     });
 
     it("should return nothing if user not logged in", async () => {
